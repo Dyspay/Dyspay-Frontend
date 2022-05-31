@@ -26,7 +26,7 @@ import { useRouter } from "next/router";
 
 import { LargeNumberLike } from 'crypto';
 import { Container } from 'reactstrap';
-
+import rinkeybyTokens from '../componets/utils/rinkebyTokens.json'
 
 import {
   FactoryAddress
@@ -132,6 +132,7 @@ const router = useRouter();
 
   const checkIfGroupIsActivated = async () => {
     const groupDetails: any = JSON.parse(localStorage.getItem("groupAddress") || '{}');
+    if(Object.keys(groupDetails).length !== 0){
       const currentGroupAddress: any = groupDetails?.args[0]
       console.log("groupDetails", groupDetails)
       const data = {
@@ -144,13 +145,15 @@ const router = useRouter();
     };
       const response = await fetch(`http://207.154.202.18:3000/bot`, requestOptions);
       const jsonData = await response.json();
-      if(jsonData.status === "Activated"){
+      if(jsonData.status === "activated"){
         router.push({
           pathname: "/dashboard",
         });
       }else{
         return
       }
+    }
+ 
   }
 
   React.useEffect(() => {
@@ -217,7 +220,6 @@ const router = useRouter();
     let contract = new ethers.Contract(FactoryAddress,Factory.abi,signer)
     const depositLimit = ethers.utils.parseUnits(data.depositLimit.toString(),'ether')
     const newDepositDate = toTimestamp(data?.depositEndDate);
-    console.log("mewDate", newDepositDate);
     const tx = await contract.createGroup(
       address,
       data?.groupName,
@@ -246,10 +248,10 @@ const router = useRouter();
      }) 
 
     console.log("done receipt", receipt);
-    console.log( "newgrouplog",
-       receipt.events?.filter((x: any) => {     
+    // console.log( "newgrouplog",
+    //    receipt.events?.filter((x: any) => {     
           
-        return x.event == "NewGroup";    })  );
+    //     return x.event == "NewGroup";    })  );
 
     
   }
@@ -573,7 +575,7 @@ const router = useRouter();
                 {required:true}
                 )}
                 variant="outlined">
-                   {tokens?.map((token: any, index: any) => (
+                   {rinkeybyTokens?.map((token: any, index: any) => (
                       <MenuItem
                       onClick={()=> {
                         setCurrentToken(token?.address)

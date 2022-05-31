@@ -9,7 +9,8 @@ import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import { useForm } from "react-hook-form";
-
+import Web3Modal from "web3modal"
+import GroupManagement from "../abi/GroupManagement.json"
 import TextField from '@mui/material/TextField';
 import Container from '@mui/material/Container'
 
@@ -25,18 +26,97 @@ function Deposit({tokens}:{
     tokens : any;
   }){
 
+type groupValues = {
+  groupName:string,
+  groupSymbol: string,
+  depositLimit: string,
+  owner: string,
+  totalDeposited: string,
+  totalMinted: string,
+  depositToken: string,
+  treasureAddress: string,
+  groupAddress: string
+}
+
 type FormValues = {
     amount: number;
     }
 const router = useRouter();
 
 const [loading, setLoading] = React.useState(false);
+const [groupAddress, setGroupAddress] = React.useState("");
+const [group, setGroup] = React.useState<groupValues>({
+  groupName:"",
+  groupSymbol: "",
+  depositLimit: "",
+  owner: "",
+  totalDeposited: "",
+  totalMinted: "",
+  depositToken:"",
+  treasureAddress: "",
+  groupAddress: ""
+});
+
 
 const {register, handleSubmit, getValues, formState:{ dirtyFields}, reset} = useForm<FormValues>({
     defaultValues :{
         amount: 0,
     }
   })
+
+  React.useEffect(()=> {
+    if(router.isReady){
+        const groupDetails: any = JSON.parse(localStorage.getItem("groupAddress") || '{}');
+        if(Object.keys(groupDetails).length !== 0){
+          getGroupDeatils()
+        }else{
+            router.push({
+                pathname:"/"
+            })
+        }
+
+    }
+},[router.isReady, router.query, router.pathname])
+
+const getGroupDeatils = async () => {
+  setLoading(true);
+  const groupDetails: any = JSON.parse(localStorage.getItem("groupAddress") || '{}');
+    const currentGroupAddress: any = groupDetails?.args[0]
+    setGroupAddress(currentGroupAddress);
+    const requestOptions = {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+  };
+    const response = await fetch(`http://207.154.202.18:3000/groups/${currentGroupAddress}`, requestOptions);
+    const jsonData = await response.json();
+      console.log("currentGroup", jsonData)
+      setGroup(jsonData);
+      setLoading(false)
+}
+
+const onSubmit = async (data: any) =>{
+  console.log("data", data);
+  setLoading(true);
+  const web3Modal = new Web3Modal()
+  const connection = await web3Modal.connect()
+  const provider = new ethers.providers.Web3Provider(connection);
+  const signer = provider.getSigner()
+  let contract = new ethers.Contract(groupAddress,GroupManagement.abi,signer)
+  const amount = ethers.utils.parseUnits(data.amount.toString(),'ether')
+  if(group?.depositToken === "0x0000000000000000000000000000000000000000"){
+    const tx = await contract.addDeposit(0, {value: amount})
+    let recepit = await tx.wait();
+    console.log("receipt on zero address", recepit)
+  } else {
+    await contract.approve(group?.groupAddress, amount)
+    const tx = await contract.addDeposit(amount)
+    let recepit = await tx.wait();
+    console.log("receipt on non zero address", recepit)
+    
+  }
+
+  
+}
 
   if (loading) {
     return (
@@ -74,8 +154,10 @@ const {register, handleSubmit, getValues, formState:{ dirtyFields}, reset} = use
 
                 </Grid>
           </Box>
-
-            <Box
+          <form
+            style={{display:"flex", flexDirection:"column"}}
+            onSubmit={handleSubmit(onSubmit)}>
+              <Box
                 sx={{
                   maxWidth:"30rem",
                   display:"flex",
@@ -103,17 +185,17 @@ const {register, handleSubmit, getValues, formState:{ dirtyFields}, reset} = use
                     {...register("amount",
                     {required: true}
                     )}
+                  
                     type="number"
-                    InputProps={{ inputProps: { min: 0} }}
+                    InputProps={{ inputProps: { min: 0, step: "any"} }}
                     id="amount" label="Amount" variant="outlined" />
                   </Container>
-            </Box>
-            <Box sx={{
+                  <Box sx={{
                   display:"flex",
                   justifyContent:"flex-end"
                 }}>
                 <Button 
-               
+                type='submit'
                       sx={{
                           my:2,
                           backgroundColor:"white",
@@ -126,6 +208,10 @@ const {register, handleSubmit, getValues, formState:{ dirtyFields}, reset} = use
                       
                       variant='contained' size="medium">Deposit</Button>
                 </Box>
+            </Box>
+            </form>
+           
+           
 
         </Layout>
         </>
@@ -136,7 +222,7 @@ const {register, handleSubmit, getValues, formState:{ dirtyFields}, reset} = use
 export async function getServerSideProps() {
     const res = await fetch('https://api-polygon-tokens.polygon.technology/tokenlists/testnet.tokenlist.json')
     const json = await res.json()
-    // console.log(JSON.stringify(json))
+    console.log(JSON.stringify(json))
     return {
       props: {
         tokens: json.tokens,

@@ -35,6 +35,11 @@ import Container from '@mui/material/Container';
 import Link from 'next/link';
 import Web3Modal from "web3modal";
 
+
+interface indow {
+  ethereum: any;
+}
+
 const drawerWidth = 140;
 
 const Search = styled('div')(({ theme }) => ({
@@ -121,7 +126,15 @@ export default function Header() {
                     method: "eth_requestAccounts"
                 })
                 setWalletAddress(accounts[0]);
+                await 
                 localStorage.setItem("account", accounts[0]);
+                (window as any).ethereum.on('accountsChanged', function (accounts: any) {
+                  // Time to reload your interface with accounts[0]!
+                  console.log(accounts[0])
+                setWalletAddress(accounts[0]);
+                localStorage.setItem("account", accounts[0]);
+
+                 });
 
             } catch (error) {
                 console.log(error)
@@ -145,7 +158,8 @@ export default function Header() {
       setWalletAddress("");
       localStorage.removeItem("account");
     }
-    // React.useState(()=>{
+
+    // React.useEffect(()=>{
     //   if((window as any).ethereum !== 'undefined') {
     //     (window as any).ethereum.on('chainChanged', async () => {
     //       const accounts = await (window as any).ethereum.request({

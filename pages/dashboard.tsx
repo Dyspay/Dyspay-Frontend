@@ -108,7 +108,8 @@ function Dashboard ({collections}: {
     React.useEffect(()=> {
         if(router.isReady){
             const groupDetails: any = JSON.parse(localStorage.getItem("groupAddress") || '{}');
-            if(groupDetails !== ''){
+            console.log("group", groupDetails)
+            if(Object.keys(groupDetails).length !== 0){
               getGroupDeatils()
             }else{
                 router.push({
@@ -141,7 +142,7 @@ function Dashboard ({collections}: {
           console.log("groupDetails", groupDetails)
           const data = {
             groupAddress: currentGroupAddress,
-            redirectUrl:"http://localhost:3000/dashboard"
+            redirectUrl:"http://localhost:3000/deposit"
           }
           const requestOptions = {
             method: 'POST',
