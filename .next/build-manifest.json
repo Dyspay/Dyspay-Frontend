@@ -25,15 +25,15 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
-    "/dashboard": [
+    "/group/[groupAddress]/bot/authorize": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/dashboard.js"
+      "static/chunks/pages/group/[groupAddress]/bot/authorize.js"
     ],
-    "/deposit": [
+    "/group/create": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/deposit.js"
+      "static/chunks/pages/group/create.js"
     ]
   },
   "ampFirstPages": []
