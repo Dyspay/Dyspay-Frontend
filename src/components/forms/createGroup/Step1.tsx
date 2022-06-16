@@ -2,11 +2,15 @@ import * as React from 'react'
 import { IGroup } from '@/types/group'
 import { TextField, Typography, Box, Button } from '@mui/material'
 import { useFormContext } from 'react-hook-form'
+import Colors from '@/components/lib/color'
+import { useTheme } from "next-themes";
 
 interface IStepper {
   nextFormStep: () => void
 }
 export default function Step1({ nextFormStep }: IStepper) {
+  const { theme, resolvedTheme, setTheme } = useTheme();
+
   const { register, getValues, setValue, handleSubmit } =
     useFormContext<IGroup>()
 
@@ -16,18 +20,18 @@ export default function Step1({ nextFormStep }: IStepper) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Typography variant="body1" sx={{ color: 'white', textAlign: 'left' }}>
+      <Typography variant="body1" sx={{ color: Colors[resolvedTheme]?.primary, textAlign: 'left' }}>
         What should we call this group
       </Typography>
 
       <TextField
         fullWidth
         sx={{
-          input: { color: 'white' },
-          label: { color: 'white' },
+          input: { color: Colors[resolvedTheme]?.primary },
+          label: { color: Colors[resolvedTheme]?.primary },
           '& .MuiOutlinedInput-root': {
             '& fieldset': {
-              borderColor: 'white',
+              borderColor: Colors[resolvedTheme]?.primary,
             },
             '&:hover fieldset': {
               borderColor: (theme) => theme.palette.primary.main,
@@ -40,18 +44,18 @@ export default function Step1({ nextFormStep }: IStepper) {
         label="Name"
         variant="outlined"
       />
-      <Typography variant="body1" sx={{ color: 'white', textAlign: 'left' }}>
+      <Typography variant="body1" sx={{ color: Colors[resolvedTheme]?.primary, textAlign: 'left' }}>
         a.k.a
       </Typography>
 
       <TextField
         fullWidth
         sx={{
-          input: { color: 'white' },
-          label: { color: 'white' },
+          input: { color: Colors[resolvedTheme]?.primary },
+          label: { color: Colors[resolvedTheme]?.primary },
           '& .MuiOutlinedInput-root': {
             '& fieldset': {
-              borderColor: 'white',
+              borderColor: Colors[resolvedTheme]?.primary,
             },
             '&:hover fieldset': {
               borderColor: (theme) => theme.palette.primary.main,
@@ -67,7 +71,7 @@ export default function Step1({ nextFormStep }: IStepper) {
       <Typography
         variant="subtitle2"
         component="span"
-        sx={{ color: '#959ca7', textAlign: 'left' }}
+        sx={{ color: Colors[resolvedTheme]?.textgrey, textAlign: 'left' }}
       >
         Set an easily recognizable symbol for your group token that powers the
         group&apos;s cap table management and governance infrastructure. Members
@@ -84,8 +88,8 @@ export default function Step1({ nextFormStep }: IStepper) {
           type="submit"
           sx={{
             my: 2,
-            backgroundColor: 'white',
-            color: 'black',
+            backgroundColor: Colors[resolvedTheme]?.primary,
+            color: Colors[resolvedTheme]?.secondary,
             borderRadius: '4px',
             cursor: 'pointer',
             textTransform: 'none',

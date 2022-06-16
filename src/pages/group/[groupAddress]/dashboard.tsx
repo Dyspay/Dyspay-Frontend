@@ -27,11 +27,16 @@ import MemberList from '@/components/dashboard/MemberList'
 import useLocalStorage from '@/hooks/localStorage'
 import DepositStatus from '@/components/dashboard/DepositStatus'
 import InviteToDeposit from '@/components/dashboard/InviteToDeposit'
+import Colors from '@/components/lib/color'
+import { useTheme } from "next-themes";
+
 
 interface IDasboard {
   group: IGroup
 }
 function Dashboard({ group }: IDasboard) {
+  const { theme, resolvedTheme, setTheme } = useTheme();
+
   const [loading, setLoading] = React.useState(false)
   const [userAddress] = useLocalStorage<string>('account', '')
   const [value, setValue] = React.useState('1')
@@ -96,8 +101,8 @@ function Dashboard({ group }: IDasboard) {
                       },
                       '&& .Mui-selected': {
                         '&, & .MuiListItemText-root': {
-                          color: '#ffffff',
-                          borderBottom: '2px solid #ffffff',
+                          color: Colors[resolvedTheme]?.primary,
+                          borderBottom: `2px solid ${Colors[resolvedTheme]?.primary}`,
                           fontSize: '16px',
                         },
                       },

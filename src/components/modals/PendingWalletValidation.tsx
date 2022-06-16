@@ -3,6 +3,8 @@ import { Typography } from '@mui/material'
 import Box from '@mui/material/Box'
 import Modal from '@mui/material/Modal'
 import CircularProgress from '@mui/material/CircularProgress'
+import Colors from '@/components/lib/color'
+import { useTheme } from "next-themes";
 
 interface IComponent {
   description: string
@@ -14,13 +16,15 @@ export default function PendingWalletValidation({
   closeModal,
   isOpen,
 }: IComponent) {
+  const { theme, resolvedTheme, setTheme } = useTheme();
+
   const modalStyle = {
     position: 'absolute',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: 400,
-    bgcolor: '#242526',
+    bgcolor: Colors[resolvedTheme]?.header_bg,
     borderRadius: '25px',
     boxShadow: 24,
     p: 4,
@@ -38,7 +42,7 @@ export default function PendingWalletValidation({
         <Box sx={modalStyle}>
           <Typography
             sx={{
-              color: 'white',
+              color: Colors[resolvedTheme]?.primary,
               textAlign: 'center',
             }}
           >
@@ -47,7 +51,7 @@ export default function PendingWalletValidation({
           <Typography
             sx={{
               mt: 3,
-              color: 'white',
+              color: Colors[resolvedTheme]?.primary,
               textAlign: 'center',
               fontSize: '16px',
             }}

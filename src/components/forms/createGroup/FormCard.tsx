@@ -4,12 +4,18 @@ import { Grid, Typography, Box } from '@mui/material'
 import Layout from '../../Layout'
 import { useFormContext } from 'react-hook-form'
 import { Container } from 'reactstrap'
+import Colors from '@/components/lib/color'
+import { useTheme } from "next-themes";
+import { display } from '@mui/system'
+
 
 interface IStep {
   children: React.ReactNode
   formStep: number
 }
 export default function FormCard({ children, formStep }: IStep) {
+  const { theme, resolvedTheme, setTheme } = useTheme();
+
   const { getValues } = useFormContext<IGroup>()
   return (
     <>
@@ -21,12 +27,14 @@ export default function FormCard({ children, formStep }: IStep) {
             justifyContent="Center"
             alignItems="center"
           >
-            <Box sx={{ flexGrow: 1 }}>
+            <Box sx={{ flexGrow: 1,
+              display:'flex',
+              justifyContent:"center" }}>
               <Typography
                 variant="body1"
                 sx={{
                   textAlign: 'center',
-                  color: 'white',
+                  color: Colors[resolvedTheme]?.primary,
                 }}
               >
                 CREATE A GROUP
@@ -49,19 +57,19 @@ export default function FormCard({ children, formStep }: IStep) {
               <Typography
                 component="span"
                 variant="subtitle2"
-                sx={{ color: '#959ca7', textAlign: 'left' }}
+                sx={{ color: Colors[resolvedTheme]?.textgrey, textAlign: 'left' }}
               >
                 What should we call this group?
               </Typography>
               <Typography
                 variant="subtitle1"
-                sx={{ color: 'white', mr: 3, textAlign: 'left' }}
+                sx={{ color: Colors[resolvedTheme]?.primary, mr: 3, textAlign: 'left' }}
               >
                 {getValues('name')}
                 <Typography
                   component="span"
                   variant="subtitle2"
-                  sx={{ color: '#959ca7', mx: 3, textAlign: 'left' }}
+                  sx={{ color: Colors[resolvedTheme]?.textgrey, mx: 3, textAlign: 'left' }}
                 >
                   Group Token :{getValues('symbol')}
                 </Typography>
@@ -73,13 +81,13 @@ export default function FormCard({ children, formStep }: IStep) {
             <>
               <Typography
                 variant="subtitle2"
-                sx={{ color: '#959ca7', mt: 4, textAlign: 'left' }}
+                sx={{ color: Colors[resolvedTheme]?.textgrey, mt: 4, textAlign: 'left' }}
               >
                 What’s the upper limit of the groups raise?
               </Typography>
               <Typography
                 variant="subtitle1"
-                sx={{ color: 'white', textAlign: 'left' }}
+                sx={{ color: Colors[resolvedTheme]?.primary, textAlign: 'left' }}
               >
                 {getValues('depositLimit')}
                 <Typography
@@ -103,13 +111,13 @@ export default function FormCard({ children, formStep }: IStep) {
             <>
               <Typography
                 variant="subtitle2"
-                sx={{ color: '#959ca7', mt: 5, textAlign: 'left' }}
+                sx={{ color: Colors[resolvedTheme]?.textgrey, mt: 5, textAlign: 'left' }}
               >
                 When will deposits close?
               </Typography>
               <Typography
                 variant="subtitle1"
-                sx={{ color: 'white', mr: 3, textAlign: 'left' }}
+                sx={{ color: Colors[resolvedTheme]?.primary, mr: 3, textAlign: 'left' }}
               >
                 <> {getValues('depositEndDate').toLocaleDateString()}</>
               </Typography>

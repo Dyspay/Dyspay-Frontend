@@ -6,13 +6,19 @@ import Step3 from '@/components/forms/createGroup/Step3'
 import Step4 from '@/components/forms/createGroup/Step4'
 import { useForm, FormProvider } from 'react-hook-form'
 import { tokenList } from '@/services/utils/tokenList'
+import Colors from '@/components/lib/color'
+import { useTheme } from "next-themes";
+
+
 function CreateGroup() {
+  console.log("tokenlist", tokenList)
   const methods = useForm({
     defaultValues: {
       depositEndDate: new Date(),
       token: tokenList[0],
     },
   })
+  const { theme, resolvedTheme, setTheme } = useTheme();
 
   const [formStep, setFormStep] = React.useState(0)
 

@@ -6,7 +6,8 @@ import Button from '@mui/material/Button'
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace'
 import MenuItem from '@mui/material/MenuItem'
 import { useFormContext } from 'react-hook-form'
-
+import { useTheme } from "next-themes";
+import Colors from '@/components/lib/color'
 interface IStepper {
   nextFormStep: () => void
   prevFormStep: () => void
@@ -14,10 +15,13 @@ interface IStepper {
 }
 
 export default function Step2({
+
   nextFormStep,
   prevFormStep,
   tokens,
 }: IStepper) {
+  const { theme, resolvedTheme, setTheme } = useTheme();
+
   const { register, getValues, setValue, handleSubmit } =
     useFormContext<IGroup>()
 
@@ -32,18 +36,18 @@ export default function Step2({
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <>
-        <Typography variant="h6" sx={{ color: 'white', textAlign: 'left' }}>
+        <Typography variant="h6" sx={{ color: Colors[resolvedTheme]?.primary, textAlign: 'left' }}>
           What’s the upper limit of the group raise?
         </Typography>
         <Typography
           component="span"
           variant="subtitle2"
-          sx={{ color: '#959ca7', my: 3, textAlign: 'left' }}
+          sx={{ color:  Colors[resolvedTheme]?.textgrey, my: 3, textAlign: 'left' }}
         >
           Accepting deposits beyond this amount will require an on-chain
           transaction with gas, so aim high.
         </Typography>
-        <Typography variant="body1" sx={{ color: 'white', textAlign: 'left' }}>
+        <Typography variant="body1" sx={{ color: Colors[resolvedTheme]?.primary, textAlign: 'left' }}>
           Raise in
         </Typography>
 
@@ -57,20 +61,20 @@ export default function Step2({
             tokenSelected ? tokenSelected.address : tokens[0].address
           }
           sx={{
-            input: { color: 'white' },
-            label: { color: 'white' },
+            input: { color:  Colors[resolvedTheme]?.primary },
+            label: { color:  Colors[resolvedTheme]?.primary },
             '& .MuiOutlinedInput-root': {
               '& fieldset': {
-                borderColor: 'white',
+                borderColor: Colors[resolvedTheme]?.primary,
               },
               '& svg': {
-                color: 'white',
+                color: Colors[resolvedTheme]?.primary,
               },
               '&:hover fieldset': {
                 borderColor: (theme) => theme.palette.primary.main,
               },
               '& .MuiSelect-select': {
-                color: 'white',
+                color: Colors[resolvedTheme]?.primary,
               },
             },
             my: 2,
@@ -95,7 +99,7 @@ export default function Step2({
         </TextField>
         <Typography
           variant="body1"
-          sx={{ color: 'white', mt: 3, textAlign: 'left' }}
+          sx={{ color: Colors[resolvedTheme]?.primary, mt: 3, textAlign: 'left' }}
         >
           Upper limit
         </Typography>
@@ -103,11 +107,11 @@ export default function Step2({
         <TextField
           fullWidth
           sx={{
-            input: { color: 'white' },
-            label: { color: 'white' },
+            input: { color:  Colors[resolvedTheme]?.primary },
+            label: { color:  Colors[resolvedTheme]?.primary },
             '& .MuiOutlinedInput-root': {
               '& fieldset': {
-                borderColor: 'white',
+                borderColor: Colors[resolvedTheme]?.primary,
               },
               '&:hover fieldset': {
                 borderColor: (theme) => theme.palette.primary.main,
@@ -132,14 +136,14 @@ export default function Step2({
             startIcon={
               <KeyboardBackspaceIcon
                 sx={{
-                  color: 'white',
+                  color: Colors[resolvedTheme]?.primary,
                 }}
               />
             }
             onClick={prevFormStep}
             sx={{
               my: 2,
-              color: 'white',
+              color: Colors[resolvedTheme]?.primary,
               borderRadius: '4px',
               cursor: 'pointer',
               textTransform: 'none',
@@ -153,8 +157,8 @@ export default function Step2({
             type="submit"
             sx={{
               my: 2,
-              backgroundColor: 'white',
-              color: 'black',
+              backgroundColor: Colors[resolvedTheme]?.primary,
+              color:  Colors[resolvedTheme]?.secondary,
               borderRadius: '4px',
               cursor: 'pointer',
               textTransform: 'none',
