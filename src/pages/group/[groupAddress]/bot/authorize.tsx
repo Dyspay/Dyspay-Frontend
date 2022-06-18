@@ -3,9 +3,14 @@ import { Grid, Button, Typography, Box, Link } from '@mui/material'
 import Layout from '@/components/Layout'
 import { useRouter } from 'next/router'
 import useLocalStorage from 'src/hooks/localStorage'
+import Colors from '@/components/lib/color'
+import { useTheme } from "next-themes";
+
 
 function Authorize() {
   const router = useRouter()
+  const { theme, resolvedTheme, setTheme } = useTheme();
+
   const [pendingAddress, setPendingAddress] = useLocalStorage<string>(
     'groupAddressPending',
     ''
@@ -35,7 +40,7 @@ function Authorize() {
                 variant="body1"
                 sx={{
                   textAlign: 'center',
-                  color: 'white',
+                  color: Colors[resolvedTheme]?.primary,
                 }}
               >
                 🚀 Group Created Successfully
@@ -62,7 +67,7 @@ function Authorize() {
                     type="submit"
                     sx={{
                       my: 2,
-                      backgroundColor: 'white',
+                      backgroundColor: Colors[resolvedTheme]?.primary,
                       color: 'black',
                       borderRadius: '4px',
                       cursor: 'pointer',

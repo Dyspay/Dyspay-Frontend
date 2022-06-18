@@ -13,8 +13,12 @@ import {
 } from '@/services/api/gnosisSafe'
 import { SafeTransactionDataPartial } from '@gnosis.pm/safe-core-sdk-types'
 import { ProposeTransactionProps } from '@gnosis.pm/safe-service-client'
+import Colors from '@/components/lib/color'
+import { useTheme } from "next-themes";
 
 export default function DappConnect() {
+  const { theme, resolvedTheme, setTheme } = useTheme();
+
   const router = useRouter()
   const [loading, setLoading] = React.useState(false)
   const [uri, setUri] = React.useState('')
@@ -196,8 +200,8 @@ export default function DappConnect() {
               onClick={approveSession}
               sx={{
                 my: 2,
-                backgroundColor: 'white',
-                color: 'black',
+                backgroundColor: Colors[resolvedTheme]?.primary,
+                color:Colors[resolvedTheme]?.secondary,
                 borderRadius: '4px',
                 cursor: 'pointer',
                 textTransform: 'none',
@@ -211,8 +215,8 @@ export default function DappConnect() {
               onClick={rejectSession}
               sx={{
                 my: 2,
-                backgroundColor: 'white',
-                color: 'black',
+                backgroundColor: Colors[resolvedTheme]?.primary,
+                color:Colors[resolvedTheme]?.secondary,
                 borderRadius: '4px',
                 cursor: 'pointer',
                 textTransform: 'none',
@@ -228,7 +232,7 @@ export default function DappConnect() {
             <Typography
               variant="h6"
               sx={{
-                color: 'white',
+                color: Colors[resolvedTheme]?.primary,
                 alignSelf: 'center',
               }}
             >
@@ -237,7 +241,7 @@ export default function DappConnect() {
             <Typography
               variant="body1"
               sx={{
-                color: 'white',
+                color: Colors[resolvedTheme]?.primary,
                 alignSelf: 'center',
               }}
             >
@@ -248,11 +252,11 @@ export default function DappConnect() {
               onChange={onURIPaste}
               placeholder={'Paste wc: uri'}
               sx={{
-                input: { color: 'white' },
-                label: { color: 'white' },
+                input: { color: Colors[resolvedTheme]?.primary },
+                label: { color: Colors[resolvedTheme]?.primary },
                 '& .MuiOutlinedInput-root': {
                   '& fieldset': {
-                    borderColor: 'white',
+                    borderColor: Colors[resolvedTheme]?.primary,
                   },
                   '&:hover fieldset': {
                     borderColor: (theme) => theme.palette.primary.main,
@@ -272,7 +276,7 @@ export default function DappConnect() {
           {peerMeta && peerMeta.name && (
             <Box sx={{ p: 5 }}>
               <Typography
-                sx={{ color: 'white', textAlign: 'center' }}
+                sx={{ color: Colors[resolvedTheme]?.primary, textAlign: 'center' }}
                 variant="h5"
                 component="div"
               >
@@ -280,14 +284,14 @@ export default function DappConnect() {
               </Typography>
               <img src={peerMeta.icons[0]} alt={peerMeta.name} />
               <Typography
-                sx={{ color: 'white', textAlign: 'center' }}
+                sx={{ color: Colors[resolvedTheme]?.primary, textAlign: 'center' }}
                 variant="body1"
                 component="div"
               >
                 {peerMeta.name}
               </Typography>
               <Typography
-                sx={{ color: 'white', textAlign: 'center' }}
+                sx={{ color: Colors[resolvedTheme]?.primary, textAlign: 'center' }}
                 variant="h5"
                 component="div"
               >

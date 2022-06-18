@@ -8,6 +8,9 @@ import LocalizationProvider from '@mui/lab/LocalizationProvider'
 import AdapterDateFns from '@mui/lab/AdapterDateFns'
 import DatePicker from '@mui/lab/DatePicker'
 import { useFormContext } from 'react-hook-form'
+import Colors from '@/components/lib/color'
+import { useTheme } from "next-themes";
+
 
 interface IStepper {
   nextFormStep: () => void
@@ -15,6 +18,8 @@ interface IStepper {
 }
 
 export default function Step3({ nextFormStep, prevFormStep }: IStepper) {
+  const { theme, resolvedTheme, setTheme } = useTheme();
+  
   const { register, setValue, handleSubmit, getValues } = useFormContext<IGroup>()
 
   const [datePickerValue, setValueDatePickerValue] =
@@ -27,7 +32,7 @@ export default function Step3({ nextFormStep, prevFormStep }: IStepper) {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <>
-        <Typography variant="h6" sx={{ color: 'white', textAlign: 'left' }}>
+        <Typography variant="h6" sx={{ color: Colors[resolvedTheme]?.primary, textAlign: 'left' }}>
           When will deposits close?
         </Typography>
         <Typography
@@ -64,18 +69,18 @@ export default function Step3({ nextFormStep, prevFormStep }: IStepper) {
                 {...params}
                 sx={{
                   mt: 3,
-                  input: { color: 'white' },
-                  label: { color: 'white' },
+                  input: { color:Colors[resolvedTheme]?.primary },
+                  label: { color:Colors[resolvedTheme]?.primary },
                   '& .MuiOutlinedInput-root': {
                     '& fieldset': {
-                      borderColor: 'white',
+                      borderColor:Colors[resolvedTheme]?.primary,
                     },
                     '&:hover fieldset': {
                       borderColor: (theme) => theme.palette.primary.main,
                     },
 
                     '& svg': {
-                      color: 'white',
+                      color:Colors[resolvedTheme]?.primary,
                     },
                     '&:hover button': {
                       backgroundColor: 'transparent',
@@ -98,14 +103,14 @@ export default function Step3({ nextFormStep, prevFormStep }: IStepper) {
             startIcon={
               <KeyboardBackspaceIcon
                 sx={{
-                  color: 'white',
+                  color:Colors[resolvedTheme]?.primary,
                 }}
               />
             }
             onClick={prevFormStep}
             sx={{
               my: 2,
-              color: 'white',
+              color:Colors[resolvedTheme]?.primary,
               borderRadius: '4px',
               cursor: 'pointer',
               textTransform: 'none',
@@ -119,8 +124,8 @@ export default function Step3({ nextFormStep, prevFormStep }: IStepper) {
             type="submit"
             sx={{
               my: 2,
-              backgroundColor: 'white',
-              color: 'black',
+              backgroundColor:Colors[resolvedTheme]?.primary,
+              color: Colors[resolvedTheme]?.secondary,
               borderRadius: '4px',
               cursor: 'pointer',
               textTransform: 'none',

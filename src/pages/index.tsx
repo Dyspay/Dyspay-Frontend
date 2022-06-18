@@ -3,9 +3,12 @@ import Layout from '@/components/Layout'
 import { Paper, Typography, Button, Box, Container } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 import { useRouter } from 'next/router'
-
+import { useTheme } from "next-themes";
+import Colors from '@/components/lib/color'
 function Home() {
   const router = useRouter()
+  const { theme, resolvedTheme, setTheme } = useTheme();
+
 
   return (
     <>
@@ -27,7 +30,7 @@ function Home() {
                   textAlign: 'center',
                   fontSize: '22px',
 
-                  color: 'white',
+                  color: Colors[resolvedTheme]?.primary,
                 }}
               >
                 You are not in any group yet
@@ -50,12 +53,12 @@ function Home() {
               >
                 <Button
                   onClick={() => router.push(`/group/create`)}
-                  startIcon={<AddIcon sx={{ color: 'black' }} />}
+                  startIcon={<AddIcon sx={{ color: Colors[resolvedTheme]?.secondary }} />}
                   sx={{
                     my: 2,
                     borderRadius: '12px',
-                    backgroundColor: '#ffffff',
-                    color: 'Black',
+                    backgroundColor:  Colors[resolvedTheme]?.primary,
+                    color: Colors[resolvedTheme]?.secondary,
                     fontSize: '16px',
                     cursor: 'pointer',
                     textTransform: 'none',

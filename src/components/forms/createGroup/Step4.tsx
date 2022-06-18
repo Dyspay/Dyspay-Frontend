@@ -11,6 +11,8 @@ import PendingWalletValidation from '@/components/modals/PendingWalletValidation
 import { ethers } from 'ethers'
 import { useRouter } from 'next/router'
 import useLocalStorage from 'src/hooks/localStorage'
+import Colors from '@/components/lib/color'
+import { useTheme } from "next-themes";
 
 interface IStepper {
   nextFormStep: () => void
@@ -18,6 +20,8 @@ interface IStepper {
 }
 
 export default function Step4({ nextFormStep, prevFormStep }: IStepper) {
+  const { theme, resolvedTheme, setTheme } = useTheme();
+
   const { register, handleSubmit } = useFormContext<IGroup>()
   const router = useRouter()
   const [userAddress] = useLocalStorage<string>('account', '')
@@ -55,14 +59,14 @@ export default function Step4({ nextFormStep, prevFormStep }: IStepper) {
         <>
           <Typography
             variant="body1"
-            sx={{ color: 'white', textAlign: 'left' }}
+            sx={{ color: Colors[resolvedTheme]?.primary, textAlign: 'left' }}
           >
             What’s the maximum number of members?
           </Typography>
           <Typography
             component="span"
             variant="subtitle2"
-            sx={{ color: '#959ca7', textAlign: 'left' }}
+            sx={{ color: Colors[resolvedTheme]?.textgrey, textAlign: 'left' }}
           >
             Groups may have up to 99 members according to the SEC. Dyspay
             encourages all users to consult with their own legal and tax
@@ -72,11 +76,11 @@ export default function Step4({ nextFormStep, prevFormStep }: IStepper) {
           <TextField
             fullWidth
             sx={{
-              input: { color: 'white' },
-              label: { color: 'white' },
+              input: { color: Colors[resolvedTheme]?.primary },
+              label: { color: Colors[resolvedTheme]?.primary },
               '& .MuiOutlinedInput-root': {
                 '& fieldset': {
-                  borderColor: 'white',
+                  borderColor: Colors[resolvedTheme]?.primary,
                 },
                 '&:hover fieldset': {
                   borderColor: (theme) => theme.palette.primary.main,
@@ -102,14 +106,14 @@ export default function Step4({ nextFormStep, prevFormStep }: IStepper) {
               startIcon={
                 <KeyboardBackspaceIcon
                   sx={{
-                    color: 'white',
+                    color: Colors[resolvedTheme]?.primary,
                   }}
                 />
               }
               onClick={prevFormStep}
               sx={{
                 my: 2,
-                color: 'white',
+                color: Colors[resolvedTheme]?.primary,
                 borderRadius: '4px',
                 cursor: 'pointer',
                 textTransform: 'none',
@@ -123,8 +127,8 @@ export default function Step4({ nextFormStep, prevFormStep }: IStepper) {
               type="submit"
               sx={{
                 my: 2,
-                backgroundColor: 'white',
-                color: 'black',
+                backgroundColor: Colors[resolvedTheme]?.primary,
+                color: Colors[resolvedTheme]?.secondary,
                 borderRadius: '4px',
                 cursor: 'pointer',
                 textTransform: 'none',

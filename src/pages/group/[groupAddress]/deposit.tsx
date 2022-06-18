@@ -13,6 +13,11 @@ import { getGroupByAddress, DepositType } from '@/services/api/group'
 import { IGroup } from '@/types/group'
 import PendingWalletValidation from '@/components/modals/PendingWalletValidation'
 import { tokenList, Itoken } from '@/services/utils/tokenList'
+
+import Colors from '@/components/lib/color'
+import { useTheme } from "next-themes";
+
+
 interface IDepsit {
   group: IGroup
 }
@@ -21,6 +26,8 @@ function Deposit({ group }: IDepsit) {
     amount: number
   }
   const router = useRouter()
+  const { theme, resolvedTheme, setTheme } = useTheme();
+
   const [loading, setLoading] = React.useState(false)
   const [status, setStatus] = React.useState<{ type: string } | undefined>(
     undefined
@@ -77,7 +84,7 @@ function Deposit({ group }: IDepsit) {
                 variant="body1"
                 sx={{
                   textAlign: 'center',
-                  color: 'white',
+                  color: Colors[resolvedTheme]?.primary,
                 }}
               >
                 {status?.type === 'success' && (
@@ -92,8 +99,8 @@ function Deposit({ group }: IDepsit) {
                       type="submit"
                       sx={{
                         my: 2,
-                        backgroundColor: 'white',
-                        color: 'black',
+                        backgroundColor: Colors[resolvedTheme]?.primary,
+                        color: Colors[resolvedTheme]?.secondary,
                         borderRadius: '4px',
                         cursor: 'pointer',
                         textTransform: 'none',
@@ -131,7 +138,7 @@ function Deposit({ group }: IDepsit) {
                 variant="body1"
                 sx={{
                   textAlign: 'center',
-                  color: 'white',
+                  color: Colors[resolvedTheme]?.primary,
                 }}
               >
                 Deposit is close
@@ -158,7 +165,7 @@ function Deposit({ group }: IDepsit) {
                 variant="body1"
                 sx={{
                   textAlign: 'center',
-                  color: 'white',
+                  color: Colors[resolvedTheme]?.primary,
                 }}
               >
                 Deposit to group wallet
@@ -167,7 +174,7 @@ function Deposit({ group }: IDepsit) {
                 variant="body1"
                 sx={{
                   textAlign: 'center',
-                  color: 'white',
+                  color: Colors[resolvedTheme]?.primary,
                 }}
               >
                 Remaining time :
@@ -193,18 +200,18 @@ function Deposit({ group }: IDepsit) {
             <Container>
               <Typography
                 variant="body1"
-                sx={{ color: 'white', textAlign: 'left' }}
+                sx={{ color: Colors[resolvedTheme]?.primary, textAlign: 'left' }}
               >
                 How much do you want to deposit?
               </Typography>
               <TextField
                 fullWidth
                 sx={{
-                  input: { color: 'white' },
-                  label: { color: 'white' },
+                  input: { color: Colors[resolvedTheme]?.primary },
+                  label: { color: Colors[resolvedTheme]?.primary },
                   '& .MuiOutlinedInput-root': {
                     '& fieldset': {
-                      borderColor: 'white',
+                      borderColor: Colors[resolvedTheme]?.primary,
                     },
                     '&:hover fieldset': {
                       borderColor: (theme) => theme.palette.primary.main,
@@ -230,8 +237,8 @@ function Deposit({ group }: IDepsit) {
                 type="submit"
                 sx={{
                   my: 2,
-                  backgroundColor: 'white',
-                  color: 'black',
+                  backgroundColor: Colors[resolvedTheme]?.primary,
+                  color: Colors[resolvedTheme]?.secondary,
                   borderRadius: '4px',
                   cursor: 'pointer',
                   textTransform: 'none',
