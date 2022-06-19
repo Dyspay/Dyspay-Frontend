@@ -38,9 +38,7 @@ export default function Step4({ nextFormStep, prevFormStep }: IStepper) {
       ethers.utils.parseUnits(groupForm.depositLimit.toString(), 'ether'),
       groupForm.maxMembers,
     ]
-    console.log(groupPayLoad)
     const { result, error } = await createGroup(groupPayLoad)
-    console.log(error)
     setLoading(false)
     if (error) return
     const { groupAddress } = result[0].args

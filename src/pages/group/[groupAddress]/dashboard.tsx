@@ -123,7 +123,8 @@ function Dashboard({ group }: IDasboard) {
                   >
                     <Tab label="Assets" value="1" />
                     <Tab label="Members" value="2" />
-                    <Tab label="Activity" value="3" />
+                    <Tab label="Transactions" value="3" />
+                    <Tab label="Proposals" value="4" />
                   </TabList>
                 </Box>
                 <TabPanel value="1">
@@ -133,6 +134,7 @@ function Dashboard({ group }: IDasboard) {
                   <MemberList group={group} />
                 </TabPanel>
                 <TabPanel value="3">Item Three</TabPanel>
+                <TabPanel value="4">Item Three</TabPanel>
               </TabContext>
             </Box>
           </Container>
@@ -144,6 +146,7 @@ function Dashboard({ group }: IDasboard) {
 
 export async function getStaticPaths() {
   const { result } = await getAllGroup()
+  console.log('result :::::', result)
   if (!result) return
   const paths = result.map((res: any) => ({
     params: { groupAddress: res.address.toString() },
