@@ -9,7 +9,8 @@ export interface Itoken {
 }
 
 export interface ItokenList {
-  rinkeby: Itoken[]
+  rinkeby: Itoken[],
+  goerli: Itoken[]
 }
 
 const networkName = process.env.networkName as string
@@ -40,6 +41,25 @@ const AllTokenList: ItokenList = {
       decimals: 18,
       chainId: 4,
       logoURI: 'https://wallet-asset.matic.network/img/tokens/dao.svg',
+    },
+    {
+      name: 'Uniswap',
+      address: '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984',
+      symbol: 'UNI',
+      decimals: 18,
+      chainId: 4,
+      logoURI: 'https://wallet-asset.matic.network/img/tokens/uni.svg',
+    },
+  ],
+  goerli: [
+    {
+      name: 'Ether',
+      address: '0x0000000000000000000000000000000000000000',
+      symbol: 'ETH',
+      isNative: true,
+      decimals: 18,
+      chainId: 4,
+      logoURI: 'https://wallet-asset.matic.network/img/tokens/eth.svg',
     },
     {
       name: 'Uniswap',
