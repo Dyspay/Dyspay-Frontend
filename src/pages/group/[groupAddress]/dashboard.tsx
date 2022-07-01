@@ -28,14 +28,15 @@ import useLocalStorage from '@/hooks/localStorage'
 import DepositStatus from '@/components/dashboard/DepositStatus'
 import InviteToDeposit from '@/components/dashboard/InviteToDeposit'
 import Colors from '@/components/lib/color'
-import { useTheme } from "next-themes";
+import { useTheme } from 'next-themes'
 import ProposalList from '@/components/dashboard/proposal/proposalList'
+import TransactionList from '@/components/dashboard/transactionList'
 
 interface IDasboard {
   group: IGroup
 }
 function Dashboard({ group }: IDasboard) {
-  const { theme, resolvedTheme, setTheme } = useTheme();
+  const { theme, resolvedTheme, setTheme } = useTheme()
 
   const [loading, setLoading] = React.useState(false)
   const [userAddress] = useLocalStorage<string>('account', '')
@@ -128,13 +129,17 @@ function Dashboard({ group }: IDasboard) {
                   </TabList>
                 </Box>
                 <TabPanel value="1">
-                  <AssetList />
+                  <AssetList group={group} />
                 </TabPanel>
                 <TabPanel value="2">
                   <MemberList group={group} />
                 </TabPanel>
-                <TabPanel value="3">dss </TabPanel>
-                <TabPanel value="4"><ProposalList group={group}/></TabPanel>
+                <TabPanel value="3">
+                  <TransactionList group={group} />{' '}
+                </TabPanel>
+                <TabPanel value="4">
+                  <ProposalList group={group} />
+                </TabPanel>
               </TabContext>
             </Box>
           </Container>
@@ -145,7 +150,7 @@ function Dashboard({ group }: IDasboard) {
 }
 
 export async function getStaticPaths() {
-  console.log("Hello 1")
+  console.log('Hello 1')
   const { result } = await getAllGroup()
   console.log('result :::::', result)
   if (!result) return

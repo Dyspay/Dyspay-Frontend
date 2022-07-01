@@ -8,25 +8,28 @@ import {
   CardMedia,
   CardContent,
 } from '@mui/material'
+import { getBalance } from '@/services/api/balance'
+import { IGroup } from '@/types/group'
 
-function AssetList() {
-  const [collectibles, setCollectibles] = React.useState([])
+interface IAssetList {
+  group: IGroup
+}
+function AssetList({ group }: IAssetList) {
+  const [assets, setAssets] = React.useState([])
 
   React.useEffect(() => {
-    handleFetchCollectible()
+    handleFetchAssetr()
   }, [])
 
-  async function handleFetchCollectible() {
-    const res = await fetch(
-      'https://api.modulenft.xyz/api/v1/opensea/collection/rankings?sort_by=SEVEN_DAY_VOLUME&count=100&offset=0'
-    )
-    const json = await res.json()
-    setCollectibles(json.rankings)
+  async function handleFetchAssetr() {
+    const { result } = await getBalance(group.treasureAddress)
+    if (result) setAssets(result)
   }
+
   return (
     <>
       <Grid container spacing={2}>
-        {collectibles?.map((data: any, index: any) => (
+        {assets?.map((data: any, index: any) => (
           <Grid key={index} item xs={12} sm={6} md={4} lg={4}>
             <Card
               sx={{

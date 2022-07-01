@@ -10,11 +10,12 @@ export interface IGroup {
   address: string
   symbol: string
   name: string
-  owner:string
+  owner: string
   depositLimit: number
   depositEndDate: Date
-  token:Itoken | null
-  maxMembers:number
-  totalDeposited?:number
-  totalMinted?:number
+  token: Itoken | null
+  maxMembers: number
+  totalDeposited?: number
+  totalMinted?: number
+  treasureAddress: string
 }
