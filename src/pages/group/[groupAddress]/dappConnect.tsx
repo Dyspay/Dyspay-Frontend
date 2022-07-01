@@ -82,23 +82,11 @@ export default function DappConnect() {
     console.log(request)
     const payload = Object.assign({}, request)
 
-    const params = payload.params[0]
-    const transaction: SafeTransactionDataPartial = {
-      data: '0x85a585a585a585a5',
-      to: '0xA65387F16B013cf2Af4605Ad8aA5ec25a2cbA3a2',
-      value: '0',
-      operation: 1,
-      safeTxGas: 0,
-      gasPrice: 0,
-    }
+    const result = await proposeTransaction("0xC46f29AAdd473a7732c6093197a7893601C5075D", payload.params[0])
 
-    const result = await submitTransaction(
-      '0xc93b40bb4fe57dd5f5d591bb4171e2ce209d1603f557e2f4bee10c097e8d8ef2',
-      '0xb2b16Aa66e357e3E804Bc82b364258bD33937AEd',
-    )
+    console.log(result);
 
     if (request.method === 'eth_sendTransaction') {
-      //  payload.params[0] = await getAppControllers().wallet.populateTransaction(params);
     }
   }
 
@@ -129,7 +117,7 @@ export default function DappConnect() {
         console.log('EVENT', 'call_request', 'method', payload.method)
         console.log('EVENT', 'call_request', 'params', payload.params)
         console.log('payload ::: ', payload)
-        setRequests((prevRequest) => [...prevRequest, payload])
+        setRequests((prevRequest) => [payload])
 
         if (error) {
           throw error

@@ -9,8 +9,8 @@ import {
   Paper,
   TableHead,
 } from '@mui/material'
-import { getGroupMembers } from '@/services/api/group'
-import { IMember } from '@/types/member'
+import { getProposals } from '@/services/api/proposal'
+import { IProposal } from '@/types/proposal'
 import { IGroup } from '@/types/group'
 import { tokenList, Itoken } from '@/services/utils/tokenList'
 import { ethers } from 'ethers'
@@ -20,22 +20,19 @@ interface IProposalList {
   group: IGroup
 }
 function ProposalList({ group }: IProposalList) {
-  const [members, setMembers] = React.useState([])
-  const depositToken: Itoken = tokenList.filter(
-    (token) => token.address === group?.depositToken
-  )[0]
+  const [proposals, setProposals] = React.useState([])
 
   React.useEffect(() => {
-    handleFetchCollectible()
+    handleFetchProposals()
   }, [])
 
-  async function handleFetchCollectible() {
-    const { result } = await getGroupMembers(group.address)
-    if (result) setMembers(result)
+  async function handleFetchProposals() {
+    const { result } = await getProposals(group.address)
+    if (result) setProposals(result)
   }
   return (
     <>
-      {members.length ? (
+      {proposals.length ? (
         <>
           <TableContainer component={Paper}>
             <Table
@@ -45,31 +42,21 @@ function ProposalList({ group }: IProposalList) {
             >
               <TableHead>
                 <TableRow>
-                  <TableCell>Member</TableCell>
-                  <TableCell align="right">Deposit amount</TableCell>
-                  <TableCell align="right">
-                    Club tokens (ownership share)
-                  </TableCell>
+                  <TableCell>Name</TableCell>
+                  <TableCell align="right">Status</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {members.map((member: IMember) => (
+                {proposals.map((proposal: IProposal) => (
                   <TableRow
-                    key={member.user.address}
+                    key={proposal.name}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                   >
                     <TableCell component="th" scope="row">
-                      {shortenAddress(member.user.address)}
+                      {proposal.name}
                     </TableCell>
 
-                    <TableCell align="right">
-                      {ethers.utils.formatEther(member?.totalDeposited || 0)}{' '}
-                      {depositToken?.symbol}
-                    </TableCell>
-                    <TableCell align="right">
-                      {ethers.utils.formatEther(member?.totalMinted || 0)}{' '}
-                      {group.symbol} ({member.share}%)
-                    </TableCell>
+                    <TableCell align="right">{proposal.status}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>

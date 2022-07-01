@@ -53,7 +53,7 @@ function Details({ group }: IDetails) {
               </Typography>
               <Typography
                 variant="body1"
-                sx={{ color: 'white', textAlign: 'left' }}
+                sx={{ color: 'black', textAlign: 'left' }}
               >
                 {ethers.utils.formatEther(group?.depositLimit)} {depositToken.symbol}
               </Typography>
@@ -74,7 +74,7 @@ function Details({ group }: IDetails) {
               </Typography>
               <Typography
                 variant="body1"
-                sx={{ color: 'white', textAlign: 'left' }}
+                sx={{ color: 'black', textAlign: 'left' }}
               >
                 {ethers.utils.formatEther(group?.totalDeposited || 0)} {depositToken.symbol}
               </Typography>
@@ -95,7 +95,7 @@ function Details({ group }: IDetails) {
               </Typography>
               <Typography
                 variant="body1"
-                sx={{ color: 'white', textAlign: 'left' }}
+                sx={{ color: 'black', textAlign: 'left' }}
               >
               {ethers.utils.formatEther(group?.totalMinted || 0)} {group.symbol}
               </Typography>

@@ -26,10 +26,10 @@ function MemberList({ group }: IMemberList) {
   )[0]
 
   React.useEffect(() => {
-    handleFetchCollectible()
+    handleFetchMember()
   }, [])
 
-  async function handleFetchCollectible() {
+  async function handleFetchMember() {
     const { result } = await getGroupMembers(group.address)
     if (result) setMembers(result)
   }

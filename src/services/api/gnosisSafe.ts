@@ -10,6 +10,8 @@ import Web3Modal from 'web3modal'
 import SafeServiceClient, {
   ProposeTransactionProps,
 } from '@gnosis.pm/safe-service-client'
+import { getSafeSdk, getSafeService } from '@/services/utils/safe'
+import { getLocal } from '@/services/utils/local'
 
 export async function createTransaction(
   safeAddress: string,
@@ -43,24 +45,6 @@ export async function signAndexecuteTransaction(
   return await safeSdk.executeTransaction(safeTransaction)
 }
 
-export async function proposeTransaction(
-  transactionConfig: ProposeTransactionProps
-) {
-  const web3Modal = new Web3Modal()
-  const connection = await web3Modal.connect()
-  const provider = new ethers.providers.Web3Provider(connection)
-  const signer = provider.getSigner()
-  const ethAdapter = new EthersAdapter({ ethers, signer })
-  const safeService = new SafeServiceClient({
-    txServiceUrl:
-      process.env.txServiceUrl || 'https://safe-transaction.rinkeby.gnosis.io',
-    ethAdapter,
-  })
-  const result = await safeService.proposeTransaction(transactionConfig)
-  const result2 = await safeService.getTransaction(transactionConfig.safeTxHash)
-  console.log('result2result2result2result2', result2)
-}
-
 export async function submitTransaction(
   safeTxHash: string,
   safeAddress: string
@@ -90,7 +74,7 @@ export async function submitTransaction(
     nonce: transaction.nonce,
   }
   const safeTransaction = await safeSdk.createTransaction(safeTransactionData)
-  if (!transaction || !transaction.confirmations) return;
+  if (!transaction || !transaction.confirmations) return
   transaction.confirmations.forEach((confirmation) => {
     const signature = new EthSignSignature(
       confirmation.owner,
@@ -98,7 +82,58 @@ export async function submitTransaction(
     )
     safeTransaction.addSignature(signature)
   })
-  console.log('hello')
   const executeTxResponse = await safeSdk.executeTransaction(safeTransaction)
   return executeTxResponse
 }
+
+export async function proposeTransaction(
+  safeAddress: string,
+  transaction: any
+) {
+
+  const web3Modal = new Web3Modal()
+  const connection = await web3Modal.connect()
+  const provider = new ethers.providers.Web3Provider(connection)
+  const signer = provider.getSigner()
+  const ethAdapter = new EthersAdapter({ ethers, signer })
+  const safeService = new SafeServiceClient({
+    txServiceUrl:
+      process.env.txServiceUrl || 'https://safe-transaction.rinkeby.gnosis.io',
+    ethAdapter,
+  })
+
+  const safeSdk = await Safe.create({ ethAdapter, safeAddress })
+  console.log('to number ::', Number(transaction.value).toString()) 
+
+  const safeTransactionData: SafeTransactionData = {
+    to: '0xb2b16Aa66e357e3E804Bc82b364258bD33937AEd',
+    data: transaction.data,
+    value: Number(transaction.value).toString(),
+    operation: 0,
+    safeTxGas: 0,
+    baseGas: 0,
+    gasPrice: 0,
+    gasToken: '0x0000000000000000000000000000000000000000',
+    refundReceiver: '0x0000000000000000000000000000000000000000',
+    nonce: 0
+  }
+
+
+  const safeTransaction = await safeSdk.createTransaction(safeTransactionData)
+  //await safeSdk.signTransaction(safeTransaction)
+  const safeTxHash = await safeSdk.getTransactionHash(safeTransaction)
+  console.log('transaction::13 ',safeTxHash)
+
+  const transactionConfig: ProposeTransactionProps = {
+    safeAddress: ethers.utils.getAddress(safeAddress),
+    safeTransaction,
+    safeTxHash,
+    senderAddress: ethers.utils.getAddress(getLocal("account")),
+  }
+  console.log("Hello !!!",transactionConfig)
+  await safeService.proposeTransaction(transactionConfig)
+
+  /*  
+
+  */
+} 

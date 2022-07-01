@@ -69,6 +69,7 @@ export default function Step3({ nextFormStep, prevFormStep }: IStepper) {
                 {...params}
                 sx={{
                   mt: 3,
+                  my: 2,
                   input: { color:Colors[resolvedTheme]?.primary },
                   label: { color:Colors[resolvedTheme]?.primary },
                   '& .MuiOutlinedInput-root': {
